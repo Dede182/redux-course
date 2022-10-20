@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base{
+    a{
+        @apply no-underline cursor-pointer
+    }
+}
+
+@layer components{
+  .btn-black{
+    @apply px-4 py-[4px] text-xs  text-center text-white font-bold bg-black rounded-2xl hover:opacity-75
+  }
+  .btn-white{
+    @apply px-4 py-[2px] text-xs  text-center text-black font-bold bg-white border-2 rounded-2xl hover:opacity-75
+  }
+}
