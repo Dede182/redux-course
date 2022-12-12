@@ -1,36 +1,44 @@
-import React from 'react'
 import { useSelector,useDispatch } from 'react-redux'
 import { postRemoved } from './postSlice';
-import ByAuthor from './ByAuthor';
-import postSlice from './postSlice'
-import TimeAgo from './TimeAgo';
-import ReactionButton from './ReactionButton';
+import { useEffect } from 'react';
 
+import { postsAll,postsStatus,postsError,fetchPosts } from './postSlice';
+import PostExcerpt from './postExcerpt';
 
 const PostList = () => {
     const dispatch = useDispatch();
 
-    const posts = useSelector((state)=>state.posts);
+    const posts = useSelector(postsAll);
+    const postStatus = useSelector(postsStatus);
+    const postError = useSelector(postsError);
+
+    useEffect(()=>{
+        if(postStatus === "idle"){
+            dispatch(fetchPosts());
+        }
+    },[postStatus,dispatch])
+
+    let content;
+    if(postStatus ==="loading"){
+        content = <p>Loading...</p>
+    }
+    else if(postStatus ==="successful"){
+        const orderedPosts = posts.slice().sort((a,b)=>b.date.localeCompare(a.date))
+        content = orderedPosts.map((post)=><PostExcerpt post={post} key={post.id}/>)
+    }
+    else if (postStatus ==="failed"){
+        content = <p>{error}</p>
+    }
 
     const postDelete = (id)=>{
         dispatch(postRemoved(id))
     } 
+
+  
   return (
-    <div className='flex flex-col space-y-4'>
+    <div className='flex flex-col space-y-4 min-h-[100vh] w-full galo overflow-scroll scrollbar-hide'>
         {
-            posts.map(post => (
-                <div key={post.id}
-                id = {post.id}
-                 className="border-gray-400 border-2 px-6 py-3 rounded-lg shadow-lg">
-                    <p>{post.title}</p>
-                    <p>{post.content}</p>
-                    <div className="flex justify-between mb-2">
-                    <ByAuthor authorId={post.userId}/>
-                    <TimeAgo timestamp={post.date}/>
-                    </div>
-                    <ReactionButton post={post}/>
-                </div>
-            ))
+         content
         }
     </div>
   )

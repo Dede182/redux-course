@@ -17,3 +17,19 @@
     @apply px-4 py-[2px] text-xs  text-center text-black font-bold bg-white border-2 rounded-2xl hover:opacity-75
   }
 }
+
+.galo{
+  
+  overflow-y: scroll; /* Add the ability to scroll */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.galo::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.galo{
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
